@@ -1,5 +1,7 @@
 # Standard
 import sqlite3
+import os
+import sys
 from pathlib import Path
 
 class transactions:
@@ -24,12 +26,19 @@ class transactions:
 
 
 class database(object):
-    __DB_LOCATION = Path.home() / 'Documents' / 'GitHub' / '_appdata' / 'cli_money_tool' / 'accounts.db'
+    __DB_LOCATION = str(Path.home() / 'Documents' / 'GitHub' / '_appdata' / 'cli_money_tool' / 'accounts.db')
 
     def __init__(self):
-        self.__db_connection = sqlite3.connect(self.__DB_LOCATION)
-        self.cur = self.__db_connection.cursor()
-        # ...
+        try:
+            self.__db_connection = sqlite3.connect(self.__DB_LOCATION)
+            self.cur = self.__db_connection.cursor()
+        except Exception as e:
+            if e == 'unable to open database file':
+                Path(Path.home() / 'Documents' / 'GitHub' / '_appdata' / 'cli_money_tool').mkdir(parents=True, exist_ok=True)
+                self.__db_connection = sqlite3.connect(self.__DB_LOCATION)
+                print('Database created. Run again.')
+            print(Exception, e)
+            sys.exit()
     def __del__(self):
         self.__db_connection.close()
     
@@ -65,6 +74,12 @@ class database(object):
                         )''')
 
     def create_tables(self):
+        if Path.home() / 'Documents' / 'GitHub' / '_appdata' / 'cli_money_tool' / 'accounts.db':
+            pass
+        else:
+            Path(Path.cwd() / '..' / '_appdata' / 'cli_money_tool').mkdir(parents=True, exist_ok=True)
+
+        
         """create a database table if it does not exist already"""
         self.cur.execute('''CREATE TABLE IF NOT EXISTS 
                                 "transactions" (
