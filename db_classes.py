@@ -26,19 +26,18 @@ class transactions:
 
 
 class database(object):
-    __DB_LOCATION = str(Path.home() / 'Documents' / 'GitHub' / '_appdata' / 'cli_money_tool' / 'accounts.db')
+    #__DB_LOCATION = Path.home() / 'Documents' / 'GitHub' / '_appdata' / 'cli_money_tool' / 'accounts.db'
+    #print(__DB_LOCATION)
 
     def __init__(self):
-        try:
-            self.__db_connection = sqlite3.connect(self.__DB_LOCATION)
+        __DB_LOCATION = Path.home() / 'Documents' / 'GitHub' / '_appdata' / 'cli_money_tool' / 'accounts.db'
+        if os.path.exists(__DB_LOCATION):
+            self.__db_connection = sqlite3.connect(__DB_LOCATION)
             self.cur = self.__db_connection.cursor()
-        except Exception as e:
-            if e == 'unable to open database file':
-                Path(Path.home() / 'Documents' / 'GitHub' / '_appdata' / 'cli_money_tool').mkdir(parents=True, exist_ok=True)
-                self.__db_connection = sqlite3.connect(self.__DB_LOCATION)
-                print('Database created. Run again.')
-            print(Exception, e)
-            sys.exit()
+        else:
+            Path(Path.home() / 'Documents' / 'GitHub' / '_appdata' / 'cli_money_tool').mkdir(parents=True, exist_ok=True)
+            self.__db_connection = sqlite3.connect(__DB_LOCATION)
+            self.cur = self.__db_connection.cursor()
     def __del__(self):
         self.__db_connection.close()
     
@@ -54,7 +53,7 @@ class database(object):
         self.__db_connection.close()
 
     def execute(self, new_data):
-        self.cur.execute(new_data)
+        return self.cur.execute(new_data)
 
     def executemany(self, many_new_data):
         self.create_table()
@@ -84,7 +83,7 @@ class database(object):
         self.cur.execute('''CREATE TABLE IF NOT EXISTS 
                                 "transactions" (
                                     "id"            INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-                                    "acount"    	TEXT NOT NULL,
+                                    "account"    	TEXT NOT NULL,
                                     "date"	        TEXT NOT NULL,
                                     "description"	TEXT,
                                     "amount"	    INTEGER NOT NULL,
@@ -101,12 +100,21 @@ class database(object):
                                     "id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
                                     "tag"	TEXT NOT NULL
                         )''')
+
+    def select_all_transactions(self):
+        return self.cur.execute('''SELECT * FROM transactions''').fetchall()
         
-    
+    def sum_transactions_all(self, account):
+        all_amounts = self.cur.execute(f'''SELECT amount FROM transactions
+                                           WHERE account = '{account}'
+                                        ''').fetchall()
+        sum = 0
+        for i in all_amounts:
+            sum += float(i[0])
+        return round(sum, 2)
+
     def commit(self):
         self.connection.commit()
-
-
 
 
 
