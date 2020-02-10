@@ -4,6 +4,7 @@ import os
 import sys
 from pathlib import Path
 
+
 class transactions:
     def __init__(self, id, account, date, description, amount, misc):
         self.id = id
@@ -14,15 +15,17 @@ class transactions:
         self.misc = misc
     
 
-# class tags(self):
-#     id = self.id
-#     tag = self.tag
+class tags:
+    def __init__(self, id, tag):
+        self.id = id
+        self.tag = tag
 
 
-# class tags_link(self):
-#     id = self.id
-#     id_tag = self.id_tag
-#     id_transaction = self.id_transaction
+class tags_link:
+    def __init__(self, id, id_tag, id_transaction):
+        self.id = id
+        self.id_tag = id_tag
+        self.id_transaction = id_transaction
 
 
 class database(object):
@@ -32,12 +35,13 @@ class database(object):
     def __init__(self):
         __DB_LOCATION = Path.home() / 'Documents' / 'GitHub' / '_appdata' / 'cli_money_tool' / 'accounts.db'
         if os.path.exists(__DB_LOCATION):
-            self.__db_connection = sqlite3.connect(__DB_LOCATION)
+            self.__db_connection = sqlite3.connect(str(__DB_LOCATION))
             self.cur = self.__db_connection.cursor()
         else:
             Path(Path.home() / 'Documents' / 'GitHub' / '_appdata' / 'cli_money_tool').mkdir(parents=True, exist_ok=True)
-            self.__db_connection = sqlite3.connect(__DB_LOCATION)
+            self.__db_connection = sqlite3.connect(str(__DB_LOCATION))
             self.cur = self.__db_connection.cursor()
+    
     def __del__(self):
         self.__db_connection.close()
     
@@ -56,7 +60,7 @@ class database(object):
         return self.cur.execute(new_data)
 
     def executemany(self, many_new_data):
-        self.create_table()
+        #self.create_table()
         self.cur.executemany('REPLACE INTO jobs VALUES(?, ?, ?, ?)', many_new_data)
 
     def insert(self, record):
@@ -78,7 +82,6 @@ class database(object):
         else:
             Path(Path.cwd() / '..' / '_appdata' / 'cli_money_tool').mkdir(parents=True, exist_ok=True)
 
-        
         """create a database table if it does not exist already"""
         self.cur.execute('''CREATE TABLE IF NOT EXISTS 
                                 "transactions" (
@@ -114,7 +117,7 @@ class database(object):
         return round(sum, 2)
 
     def commit(self):
-        self.connection.commit()
+        self.__db_connection.commit()
 
 
 

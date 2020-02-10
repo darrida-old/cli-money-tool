@@ -1,6 +1,6 @@
 # Standard
 import sqlite3
-from pathlib import *
+from pathlib import Path
 
 # Local
 import db_classes as data
