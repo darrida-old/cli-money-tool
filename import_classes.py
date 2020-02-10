@@ -10,7 +10,7 @@ import click
 # Local
 import db_classes as data
 
-def import_oldsecond(name):
+def import_oldsecond(name: str):
     # IMPORT OLDSECOND CSV FILE
     try:
         data_location = '..\_appdata\cli_money_tool\\'
@@ -56,7 +56,7 @@ def import_oldsecond(name):
         click.echo('UPLOAD FAILED: Table in database was not found. Check existence of database or table. May need to run install.bat again.')
         click.echo(f'ERROR MESSAGE: {e}')
 
-def import_chase(name, data_location):
+def import_chase(name: str, data_location: str):
     # IMPORT CHASE CSV FILE
     try:
         reader = csv.DictReader(open(data_location + '\\' + name, 'r'))
@@ -100,11 +100,11 @@ def import_chase(name, data_location):
         click.echo(f'ERROR MESSAGE: {e}')
 
 
-def import_paypal(name):
+def import_paypal(name: str):
     pass
 
-def import_edwardjones(name):
+def import_edwardjones(name: str):
     pass
 
-def import_capitalone(name):
+def import_capitalone(name: str):
     pass

@@ -56,10 +56,10 @@ class database(object):
             self.__db_connection.commit()
         self.__db_connection.close()
 
-    def execute(self, new_data):
+    def execute(self, new_data:str) -> tuple:
         return self.cur.execute(new_data)
 
-    def executemany(self, many_new_data):
+    def executemany(self, many_new_data: str) -> None:
         #self.create_table()
         self.cur.executemany('REPLACE INTO jobs VALUES(?, ?, ?, ?)', many_new_data)
 
@@ -104,10 +104,10 @@ class database(object):
                                     "tag"	TEXT NOT NULL
                         )''')
 
-    def select_all_transactions(self):
+    def select_all_transactions(self) -> tuple:
         return self.cur.execute('''SELECT * FROM transactions''').fetchall()
         
-    def sum_transactions_all(self, account):
+    def sum_transactions_all(self, account: str) -> int:
         all_amounts = self.cur.execute(f'''SELECT amount FROM transactions
                                            WHERE account = '{account}'
                                         ''').fetchall()
