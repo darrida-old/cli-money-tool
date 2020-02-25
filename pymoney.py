@@ -1,3 +1,10 @@
+"""pymoney: CLI Personal Finance Assistant
+
+This tool will assist with the aggregation of financial transactions for several
+major institutions.
+"""
+
+
 # Standard Library
 from pathlib import Path
 
@@ -14,11 +21,21 @@ data_location = str(Path("<path here>"))
 
 @click.group()
 def cli():
-    """Money cli."""
+    """Money cli.
+    """
 
 
 @cli.command("setup", help="Configure location(s) of file and sqlite database.")
 def pymoney_setup():
+    """Initalizes the setup process.
+
+    This assists with configuring the locations that the application 
+    should import csv files from.
+
+    Example::
+
+        pymoney setup
+    """
     pass
 
 
@@ -30,6 +47,11 @@ def pymoney_setup():
 )
 @click.argument("bank")
 def file_imports(bank):
+    """Runs the import procedure for requested institution.
+    
+    Arguments:
+        bank {string} -- selected institution
+    """
     bank = bank.lower()
     if bank == "oldsecond":
         imp.import_oldsecond("checking_transactions.csv")
@@ -53,6 +75,11 @@ def file_imports(bank):
 )
 @click.argument("bank")
 def transactions_sum(bank):
+    """Returns a sum of all transacations from requested institution.
+    
+    Arguments:
+        bank {string} -- selected institution
+    """
     bank = bank.lower()
     if bank == "chase":
         account = "credit_chase"

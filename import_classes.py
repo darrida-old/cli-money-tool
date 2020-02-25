@@ -11,7 +11,12 @@ import db_classes as data
 
 
 def import_oldsecond(name: str):
-    # IMPORT OLDSECOND CSV FILE
+    """DESCRIPTION: Import Old Second CSV File
+
+    Arguments:
+        name (string): file name
+    """
+
     try:
         data_location = "..\\_appdata\\cli_money_tool\\"
         reader = csv.DictReader(open(data_location + name, "r"))
@@ -32,18 +37,14 @@ def import_oldsecond(name: str):
                     # CHECK IF MATCHING RECORD EXISTS ALREADY. IF SO, INSERT = FALSE
                     for transaction in existing:
                         if (
-                            transaction[1].replace(" ", "")
-                            == i["Account Designator"].replace(" ", "")
-                            and transaction[2].replace(" ", "")
-                            == i["Posted Date"].replace(" ", "")
-                            and transaction[3].replace(" ", "")
-                            == i["Description"].replace(" ", "")
-                            and float(transaction[4])
-                            == (
-                                (float(i["Amount"]) * -1)
-                                if i["CR/DR"] == "DR"
-                                else float(i["Amount"])
-                            )
+                            transaction[1].replace(" ", "") == i["Account Designator"].replace(" ", "")
+                            and transaction[2].replace(" ", "") == i["Posted Date"].replace(" ", "")
+                            and transaction[3].replace(" ", "") == i["Description"].replace(" ", "")
+                            and float(transaction[4]) == (
+                                                        (float(i["Amount"]) * -1)
+                                                        if i["CR/DR"] == "DR"
+                                                        else float(i["Amount"])
+                                                    )
                             and float(transaction[5]) == float(i["Serial Number"])
                         ) is True:
                             insert = False
@@ -74,7 +75,14 @@ def import_oldsecond(name: str):
 
 
 def import_chase(name: str, data_location: str):
-    # IMPORT CHASE CSV FILE
+    """DESCRIPTION: Import Chase CSV file
+
+    Arugments:
+        name (string): file name
+        
+        data_location (string): file location
+    """
+
     try:
         reader = csv.DictReader(open(data_location + "\\" + name, "r"))
         dict_list = []

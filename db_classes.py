@@ -5,6 +5,8 @@ from pathlib import Path
 
 
 class transactions:
+    """Class designed for use with the Insert function in the db_banner.database class.
+    """
     def __init__(self, id, account, date, description, amount, misc):
         self.id = id
         self.account = account
@@ -15,12 +17,16 @@ class transactions:
 
 
 class tags:
+    """Not currently in use.
+    """
     def __init__(self, id, tag):
         self.id = id
         self.tag = tag
 
 
 class tags_link:
+    """Not currently in use.
+    """
     def __init__(self, id, id_tag, id_transaction):
         self.id = id
         self.id_tag = id_tag
@@ -28,9 +34,12 @@ class tags_link:
 
 
 class database(object):
-    # __DB_LOCATION = Path.home() / 'Documents' / 'GitHub' / '_appdata' / 'cli_money_tool' / 'accounts.db'
-    # print(__DB_LOCATION)
+    """DESCRIPTION: Handles all database connectsion, inputs, and outputs
 
+    Class constructor initiates sqlite3 database connection. If used in WITH statement
+    the connection will cleanly close after the statement is finished. If there are
+    uncommitted transactions they will be rolled back prior to connection closure.
+    """
     def __init__(self):
         __DB_LOCATION = (
             Path.home()
@@ -65,16 +74,32 @@ class database(object):
         self.__db_connection.close()
 
     def execute(self, new_data: str) -> tuple:
+        """Executes an valid SQL statement passed through as a string.
+
+        Arugments:
+            new_data (string): Valid SQL statement
+        """
         return self.cur.execute(new_data)
 
     def executemany(self, many_new_data: str) -> None:
-        # self.create_table()
+        """Not currently in use.
+        """
         self.cur.executemany("REPLACE INTO jobs VALUES(?, ?, ?, ?)", many_new_data)
 
     def insert(self, record):
-        record.id = self.cur.execute("""SELECT MAX(id) FROM transactions""").fetchone()[
-            0
-        ]
+        """Inserts a transaction record. Designed for use with the transaction class.
+
+        Arguments:
+            record (transaction class): class or dictionary containing the following values:
+
+                - id
+                - account
+                - date
+                - description
+                - amount
+                - misc
+        """
+        record.id = self.cur.execute("""SELECT MAX(id) FROM transactions""").fetchone()[0]
         record.id = record.id + 1 if record.id else 1
         self.cur.execute(
             f"""INSERT INTO transactions
@@ -132,9 +157,22 @@ class database(object):
         )
 
     def select_all_transactions(self) -> tuple:
+        """Returns all transactions
+
+        Returns:
+            tuple: contains all existing transactions in transaction table.
+        """
         return self.cur.execute("""SELECT * FROM transactions""").fetchall()
 
     def sum_transactions_all(self, account: str) -> int:
+        """Sums all transactions for specified account.
+
+        Arguments:
+            account (string): selected account/institution
+
+        Returns:
+            tuple: contains single value of rounded (2 decimal paces) result.
+        """
         all_amounts = self.cur.execute(
             f"""SELECT amount FROM transactions
                                            WHERE account = '{account}'
@@ -146,38 +184,6 @@ class database(object):
         return round(calc, 2)
 
     def commit(self):
+        """Use after any other database class function to commit changes.
+        """
         self.__db_connection.commit()
-
-
-# class Database(object):
-#     """sqlite3 database class that holds testers jobs"""
-#     DB_LOCATION = "/root/Documents/testerJobSearch/tester_db.sqlite"
-
-#     def __init__(self):
-#         """Initialize db class variables"""
-#         self.connection = sqlite3.connect(Database.DB_LOCATION)
-#         self.cur = self.connection.cursor()
-
-#     def close(self):
-#         """close sqlite3 connection"""
-#         self.connection.close()
-
-#     def execute(self, new_data):
-#         """execute a row of data to current cursor"""
-#         self.cur.execute(new_data)
-
-#     def executemany(self, many_new_data):
-#         """add many new data to database in one go"""
-#         self.create_table()
-#         self.cur.executemany('REPLACE INTO jobs VALUES(?, ?, ?, ?)', many_new_data)
-
-#     def create_table(self):
-#         """create a database table if it does not exist already"""
-#         self.cur.execute('''CREATE TABLE IF NOT EXISTS jobs(title text, \
-#                                                             job_id integer PRIMARY KEY,
-#                                                             company text,
-#                                                             age integer)''')
-
-#     def commit(self):
-#         """commit changes to database"""
-#         self.connection.commit()
