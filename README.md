@@ -2,5 +2,5 @@
 
 Note: this is very much in progress
 
-- This tool allows the import and manipulation of data from CSV files exported from financial institutions
+This CLI allows the import and exploration of data from CSV files exported from financial institutions
 

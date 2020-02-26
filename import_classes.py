@@ -13,7 +13,14 @@ import db_classes as data
 def import_oldsecond(name: str):
     """DESCRIPTION: Import Old Second CSV File
 
-    Arguments:
+    - Imports oldsecond CSV file.
+    - Queries transactiosn table for previous chase transactions.
+    - Interates over each row:
+      - Checks against previous chase transactions to ensure that identical transaction does not already exist in the database.
+      - If transaction is new, data is inserted into a transactions class, then inserted into the transactions table using db.insert()
+    - Displays number of existing transactiosn and new transactions after data is processed.
+
+    Arugments:
         name (string): file name
     """
     try:
@@ -138,12 +145,27 @@ def import_chase(name: str, data_location: str):
 
 
 def import_paypal(name: str):
+    """[summary]
+    
+    Arguments:
+        name (str): [description]
+    """    
     pass
 
 
 def import_edwardjones(name: str):
+    """[summary]
+    
+    Arguments:
+        name (str): [description]
+    """
     pass
 
 
 def import_capitalone(name: str):
+    """[summary]
+    
+    Arguments:
+        name str): [description]
+    """    
     pass

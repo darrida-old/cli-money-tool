@@ -36,7 +36,7 @@ class tags_link:
 
 
 class database(object):
-    """DESCRIPTION: Handles all database connectsion, inputs, and outputs
+    """Handles all database connectsion, inputs, and outputs
 
     Class constructor initiates sqlite3 database connection. If used in WITH statement
     the connection will cleanly close after the statement is finished. If there are
