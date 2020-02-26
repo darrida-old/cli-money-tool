@@ -5,7 +5,9 @@ from pathlib import Path
 
 
 class transactions:
-    """Class designed for use with the Insert function in the db_banner.database class.
+    """Intended use is with an insert function into the transation table.
+    
+    This class is passed into the db_banner.database function.
     """
     def __init__(self, id, account, date, description, amount, misc):
         self.id = id
@@ -17,7 +19,7 @@ class transactions:
 
 
 class tags:
-    """Not currently in use.
+    """Not currently in use. Intended use is with an insert function into the tags table.
     """
     def __init__(self, id, tag):
         self.id = id
@@ -25,7 +27,7 @@ class tags:
 
 
 class tags_link:
-    """Not currently in use.
+    """Not currently in use. Intended use is with an insert function into the tags_link table.
     """
     def __init__(self, id, id_tag, id_transaction):
         self.id = id
@@ -114,6 +116,10 @@ class database(object):
         )
 
     def create_tables(self):
+        """This function confirms the existence of or creates the path, database, and tables.
+
+        Can be used by calling the function directly, but is designed to by used by install.py, which is called by the install.bat file.
+        """
         if (
             Path.home()
             / "Documents"
@@ -185,5 +191,7 @@ class database(object):
 
     def commit(self):
         """Use after any other database class function to commit changes.
+
+        This function is separated from initial transactions to enable the __exit__ function to rollback changes in the case that errors are encountered.
         """
         self.__db_connection.commit()

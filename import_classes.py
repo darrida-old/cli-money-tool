@@ -16,7 +16,6 @@ def import_oldsecond(name: str):
     Arguments:
         name (string): file name
     """
-
     try:
         data_location = "..\\_appdata\\cli_money_tool\\"
         reader = csv.DictReader(open(data_location + name, "r"))
@@ -77,12 +76,18 @@ def import_oldsecond(name: str):
 def import_chase(name: str, data_location: str):
     """DESCRIPTION: Import Chase CSV file
 
+    - Imports chase CSV file.
+    - Queries transactiosn table for previous chase transactions.
+    - Interates over each row:
+      - Checks against previous chase transactions to ensure that identical transaction does not already exist in the database.
+      - If transaction is new, data is inserted into a transactions class, then inserted into the transactions table using db.insert()
+    - Displays number of existing transactiosn and new transactions after data is processed.
+
     Arugments:
         name (string): file name
         
         data_location (string): file location
     """
-
     try:
         reader = csv.DictReader(open(data_location + "\\" + name, "r"))
         dict_list = []
