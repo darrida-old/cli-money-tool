@@ -9,9 +9,9 @@ This CLI allows the import and exploration of data from CSV files exported from 
 ### Windows
 
 - Clone repository
-- Launch install.bat (currently this is Windows only)
+- Launch install.bat
 
-### Linux
+### Linux (not tested much, but should work)
 
 - Clone reponsitory
 - Open the Terminal to the same directory as the repository and run the following:
