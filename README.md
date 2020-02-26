@@ -1,6 +1,6 @@
 # CLI-MONEY-TOOL
 
-Note: this is very much in progress
+***NOTE:** this is very much in progress. Not intended for use yet.*
 
 This CLI allows the import and exploration of data from CSV files exported from financial institutions
 
@@ -91,7 +91,7 @@ Added Transactions: 0
 
 #### ```sum```
 
-- Totals all transactions for a requested institution.
+- Totals all transactions for requested institution.
 
 ```cmd
 C:\Users\User\GitHub\cli-money-tool>pymoney sum superbank
