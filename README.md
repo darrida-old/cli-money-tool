@@ -1,6 +1,6 @@
 # CLI-MONEY-TOOL
 
-Note: This is very much in progress. Not setup wizard exists yet, so it may be difficult to enable it to function in your environment.
+***Note:*** This is very much in progress. No setup wizard exists and several areas are still hardcoded for development purposes. It will be difficult to run it in your environment.
 
 This CLI allows the import and exploration of data from CSV files exported from financial institutions
 
