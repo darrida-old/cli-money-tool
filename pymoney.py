@@ -83,14 +83,8 @@ def transactions_sum(bank):
     bank = bank.lower()
     if bank == "chase":
         account = "credit_chase"
-    if bank == "oldsecond":
+    elif bank == "oldsecond":
         account = "Checking"
-    if bank == "capitalone":
-        pass
-    if bank == "paypal":
-        pass
-    if bank == "edwardjones":
-        pass
     # if bank == 'all':
     #    account = '*'
     with data.database() as db:

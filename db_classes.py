@@ -51,15 +51,12 @@ class database(object):
             / "cli_money_tool"
             / "accounts.db"
         )
-        if os.path.exists(__DB_LOCATION):
-            self.__db_connection = sqlite3.connect(str(__DB_LOCATION))
-            self.cur = self.__db_connection.cursor()
-        else:
+        if not os.path.exists(__DB_LOCATION):
             Path(
                 Path.home() / "Documents" / "GitHub" / "_appdata" / "cli_money_tool"
             ).mkdir(parents=True, exist_ok=True)
-            self.__db_connection = sqlite3.connect(str(__DB_LOCATION))
-            self.cur = self.__db_connection.cursor()
+        self.__db_connection = sqlite3.connect(str(__DB_LOCATION))
+        self.cur = self.__db_connection.cursor()
 
     def __del__(self):
         self.__db_connection.close()
@@ -120,7 +117,7 @@ class database(object):
 
         Can be used by calling the function directly, but is designed to by used by install.py, which is called by the install.bat file.
         """
-        if (
+        if not (
             Path.home()
             / "Documents"
             / "GitHub"
@@ -128,8 +125,6 @@ class database(object):
             / "cli_money_tool"
             / "accounts.db"
         ):
-            pass
-        else:
             Path(Path.cwd() / ".." / "_appdata" / "cli_money_tool").mkdir(
                 parents=True, exist_ok=True
             )
